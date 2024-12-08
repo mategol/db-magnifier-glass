@@ -32,9 +32,11 @@ class dbmg:
     
     def search_databases(self, command_options):
         start_time = time.time()
+        print(command_options)
         for database in command_options['databases']:
             print(f"Searching in {database}...")
             command = f'grep -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
+            print(command)
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             if result.stdout:
                 print(result.stdout)
