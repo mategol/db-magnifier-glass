@@ -18,7 +18,7 @@ aliases = [
 
 class dbmg:
     def __init__(self):
-        self.CONFIGURATION = json.load(open("db-magnifier-glass.conf"))
+        self.CONFIGURATION = json.load(open('db-magnifier-glass.conf'))
         #self.check_mount_point()
         self.process_command()
 
@@ -26,22 +26,29 @@ class dbmg:
         mounted_partitions = subprocess.run('df', shell=True, capture_output=True, text=True).stdout.split('\n')
         for partition in mounted_partitions:
             if self.CONFIGURATION['mount_point'][0] in partition and self.CONFIGURATION['mount_point'][1] in partition:
-                print("Mount point found")
+                print('Mount point found')
                 return
-        print("Mount point not found")
+        print('Mount point not found')
     
     def search_databases(self, command_options):
-        start_time = time.time()
+        general_start = time.time()
         print(command_options)
         for database in command_options['databases']:
-            print(f"Searching in {database}...")
+            
+            individual_start = time.time()
+            print(f'Searching in {database}...', end=('\n' if command_options['verbose'] else '\r'))
             command = f'grep -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
-            print(command)
+
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
+            
             if result.stdout:
                 print(result.stdout)
+            
+            if command_options['time']:
+                print(f'{database} search time: {round(float(time.time()-individual_start), 3)}s')
+
         if command_options['time']:
-            print("Execution time:", time.time() - start_time)
+            print(f'General search time: {round(float(time.time()-general_start), 3)}s')
 
     def process_command(self):
         command_options = {
@@ -70,10 +77,10 @@ class dbmg:
                 command_options['time'] = False
 
         if command_options['databases'] == []:
-            print("Specify databases with -d or --databases or search all with -a or --all")
+            print('Specify databases with -d or --databases or search all with -a or --all')
             return
         if command_options['goal'] == '':
-            print("Specify a value to look for with -g or --goal")
+            print('Specify a value to look for with -g or --goal')
             return
         
         self.search_databases(command_options)
@@ -85,5 +92,5 @@ class dbmg:
 
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     dbmg()
