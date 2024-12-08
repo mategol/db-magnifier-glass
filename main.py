@@ -34,7 +34,7 @@ class dbmg:
         start_time = time.time()
         for database in command_options['databases']:
             print(f"Searching in {database}...")
-            command = f'grep -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["databases_path"]}/{database}"'
+            command = f'grep -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             if result.stdout:
                 print(result.stdout)
@@ -54,10 +54,10 @@ class dbmg:
                 self.show_help()
                 return
             if arg.startswith('-l') or arg.startswith('--list'):
-                os.system('ls ' + self.CONFIGURATION['databases_path'])
+                os.system('ls ' + self.CONFIGURATION['mount_point'][1])
                 return
             if arg.startswith('-a') or arg.startswith('--all'):
-                command_options['databases'] = os.listdir(self.CONFIGURATION['databases_path'])
+                command_options['databases'] = os.listdir(self.CONFIGURATION['mount_point'][1])
             elif arg.startswith('-d') or arg.startswith('--databases'):
                 command_options['databases'] = arg.split('=')[1].split(',')
             if arg.startswith('-v') or arg.startswith('--verbose'):
