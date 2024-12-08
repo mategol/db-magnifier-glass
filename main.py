@@ -37,13 +37,13 @@ class dbmg:
             
             individual_start = time.time()
             print(f'Searching in {database}...', end=('\n' if command_options['verbose'] else '\r'))
-            command = f'grep -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
+            command = f'grep -H -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
 
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             
-            print(result.stdout.split('\n'))
-            if result.stdout:
-                print(result.stdout)
+            for hit in result.stdout.split('\n'):
+                if hit != '':
+                    print(hit)
             
             if command_options['time']:
                 print(f'{database} search time: {round(float(time.time()-individual_start), 3)}s')
