@@ -9,8 +9,8 @@ import sys
 class dbmg:
     def __init__(self):
         self.CONFIGURATION = json.load(open("db-magnifier-glass.conf"))
-        self.check_mount_point()
-        
+        #self.check_mount_point()
+        print(sys.argv)
 
     def check_mount_point(self):
         mounted_partitions = subprocess.run('df', shell=True, capture_output=True, text=True).stdout.split('\n')
