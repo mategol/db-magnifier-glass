@@ -45,7 +45,9 @@ class dbmg:
                 if hit != '':
                     with open(hit.split(':')[0], 'rb') as file:
                         file.seek(int(hit.split(':')[2])-300)
-                        hit_context = file.read(600).decode('utf-8').replace(command_options['goal'], f'\033[31m{command_options["goal"]}\033[0m')
+                        hit_before = file.read(300).decode('utf-8')
+                        hit_before = hit_before[hit_before.find('\n')+1:]
+                        hit_context = hit_before + file.read(300).decode('utf-8').replace(command_options['goal'], f'\033[31m{command_options["goal"]}\033[0m')
 
                     print(f'\033[0m{hit.split(":")[0]}:\033[32m{hit.split(":")[1]}\033[0m:\033[31m{hit.split(":")[2]}\033[0m:{hit_context}')
             
