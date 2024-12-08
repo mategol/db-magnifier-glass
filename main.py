@@ -43,7 +43,7 @@ class dbmg:
             
             for hit in result.stdout.split('\n'):
                 if hit != '':
-                    print(hit)
+                    print(f'\033[0m{hit.split(":"[0])}:\033[32m{hit.split(":")[1]}\033[0m:\033[31m{hit.split(":")[2]}\033[0m{hit.split(":")[3]}')
             
             if command_options['time']:
                 print(f'{database} search time: {round(float(time.time()-individual_start), 3)}s')
