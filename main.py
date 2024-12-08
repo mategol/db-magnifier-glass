@@ -46,10 +46,10 @@ class dbmg:
                     with open(hit.split(':')[0], 'rb') as file:
                         file.seek(int(hit.split(':')[2])-300)
                         hit_before = file.read(300).decode('utf-8')
-                        hit_before = hit_before[hit_before.find('\n')+1:]
+                        hit_before = hit_before[::-1][hit_before.find('\n')+1:][::-1]
                         hit_context = hit_before + file.read(300).decode('utf-8').replace(command_options['goal'], f'\033[31m{command_options["goal"]}\033[0m')
 
-                    print(f'\033[0m{hit.split(":")[0]}:\033[32m{hit.split(":")[1]}\033[0m:\033[31m{hit.split(":")[2]}\033[0m:{hit_context}')
+                    print(f'\033[0m{hit.split(":")[0]}:\033[32m{hit.split(":")[1]}\033[0m:\033[31m{hit.split(":")[2]}\033[0m:{hit_context[:hit_context.find("\n")]}')
             
             if command_options['time']:
                 print(f'{database} search time: {round(float(time.time()-individual_start), 3)}s')
