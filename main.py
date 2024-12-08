@@ -1,7 +1,31 @@
 #!/usr/bin/python3
 
 import subprocess
+import time
+import json
 import sys
+
+
+class dbmg:
+    def __init__(self):
+        self.CONFIGURATION = json.load(open("db-magnifier-glass.conf"))
+        result = subprocess.run('df', shell=True, capture_output=True, text=True)
+        print(result.stdout)
+    
+
+
+
+
+
+if __name__ == "__main__":
+    dbmg()
+
+
+
+
+
+input()
+
 
 file_path = sys.argv[1]
 pattern = sys.argv[2]
