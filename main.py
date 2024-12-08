@@ -14,7 +14,11 @@ class dbmg:
 
     def check_mount_point(self):
         mounted_partitions = subprocess.run('df', shell=True, capture_output=True, text=True).stdout.split('\n')
-        print(mounted_partitions)
+        for partition in mounted_partitions:
+            if self.CONFIGURATION['mount_point'][0] in partition and self.CONFIGURATION['mount_point'][1] in partition:
+                print("Mount point found")
+                return
+        print("Mount point not found")
     
 
 
