@@ -9,6 +9,7 @@ import sys
 class dbmg:
     def __init__(self):
         self.CONFIGURATION = json.load(open("db-magnifier-glass.conf"))
+        self.check_mount_point()
         
 
     def check_mount_point(self):
