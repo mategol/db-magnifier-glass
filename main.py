@@ -41,6 +41,7 @@ class dbmg:
 
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             
+            print(result.stdout.split('\n'))
             if result.stdout:
                 print(result.stdout)
             
