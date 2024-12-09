@@ -37,7 +37,7 @@ class dbmg:
             
             individual_start = time.time()
             print(f'Searching in {database}...', end=('\n' if command_options['verbose'] else '\r'))
-            command = f'grep -H -r -n -b -o "{command_options["goal"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
+            command = f'grep -H -r -n -b -o "{command_options["target"]}" "{self.CONFIGURATION["mount_point"][1]}/{database}"'
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             
             for hit in result.stdout.split('\n'):
@@ -47,7 +47,7 @@ class dbmg:
                         hit_before = file.read(300).decode('utf-8', errors='replace')
                         hit_before = hit_before[::-1][:hit_before.find('\n')][::-1]
                         hit_after = file.read(300).decode('utf-8', errors='replace')
-                        hit_context = hit_before + hit_after[:hit_after.find("\n")].replace(command_options['goal'], f'\033[31;1m{command_options["goal"]}\033[0m')
+                        hit_context = hit_before + hit_after[:hit_after.find("\n")].replace(command_options['goal'], f'\033[31;1m{command_options["target"]}\033[0m')
 
                     print(f'\033[0m{hit.split(":")[0]}:\033[33m{hit.split(":")[1]}\033[0m:\033[32m{hit.split(":")[2]}\033[0m:{hit_context}')
             
@@ -62,32 +62,32 @@ class dbmg:
             'databases': [],
             'verbose': False,
             'time': True,
-            'goal': ''
+            'target': ''
         }
         
         for arg in sys.argv[1:]:
-            if arg.startswith('-h') or arg.startswith('--help'):
+            if arg == '-h' or arg == '--help':
                 self.show_help()
                 return
-            if arg.startswith('-l') or arg.startswith('--list'):
+            if arg == '-l' or arg == '--list':
                 os.system('ls ' + self.CONFIGURATION['mount_point'][1])
                 return
-            if arg.startswith('-a') or arg.startswith('--all'):
+            if arg == '-a' or arg == '--all':
                 command_options['databases'] = os.listdir(self.CONFIGURATION['mount_point'][1])
-            elif arg.startswith('-d') or arg.startswith('--databases'):
+            elif arg.startswith('--databases'):
                 command_options['databases'] = arg.split('=')[1].split(',')
-            if arg.startswith('-v') or arg.startswith('--verbose'):
+            if arg == '-v' or arg == '--verbose':
                 command_options['verbose'] = True
-            if arg.startswith('-g') or arg.startswith('--goal'):
-                command_options['goal'] = arg.split('=')[1]
-            if arg.startswith('-t') or arg.startswith('--no-time'):
+            if arg.startswith('--target'):
+                command_options['target'] = arg.split('=')[1]
+            if arg == '-t' or arg == '--no-time':
                 command_options['time'] = False
 
         if command_options['databases'] == []:
-            print('Specify databases with -d or --databases or search all with -a or --all')
+            print('Specify databases with --databases or search all with --all')
             return
-        if command_options['goal'] == '':
-            print('Specify a value to look for with -g or --goal')
+        if command_options['target'] == '':
+            print('Specify a value to look for with --target')
             return
         
         self.search_databases(command_options)
