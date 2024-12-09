@@ -41,12 +41,11 @@ class dbmg:
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             
             for hit in result.stdout.split('\n'):
-                print(hit)
                 if hit != '':
                     with open(hit.split(':')[0], 'rb') as file:
                         file.seek(int(hit.split(':')[2])-300)
                         hit_before = file.read(300).decode('utf-8', errors='replace')
-                        hit_before = hit_before[::-1][hit_before.find('\n')+1:][::-1]
+                        hit_before = hit_before[::-1][:hit_before.find('\n')][::-1]
                         hit_after = file.read(300).decode('utf-8', errors='replace')
                         hit_context = hit_before + hit_after[:hit_after.find("\n")].replace(command_options['goal'], f'\033[31;1m{command_options["goal"]}\033[0m')
 
