@@ -47,7 +47,7 @@ class dbmg:
                         hit_before = file.read(300).decode('utf-8', errors='replace')
                         hit_before = hit_before[::-1][:hit_before.find('\n')][::-1]
                         hit_after = file.read(300).decode('utf-8', errors='replace')
-                        hit_context = hit_before + hit_after[:hit_after.find("\n")].replace(command_options['goal'], f'\033[31;1m{command_options["target"]}\033[0m')
+                        hit_context = hit_before + hit_after[:hit_after.find("\n")].replace(command_options['target'], f'\033[31;1m{command_options["target"]}\033[0m')
 
                     print(f'\033[0m{hit.split(":")[0]}:\033[33m{hit.split(":")[1]}\033[0m:\033[32m{hit.split(":")[2]}\033[0m:{hit_context}')
             
