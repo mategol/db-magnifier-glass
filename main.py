@@ -47,9 +47,10 @@ class dbmg:
                         file.seek(int(hit.split(':')[2])-300)
                         hit_before = file.read(300).decode('utf-8', errors='replace')
                         hit_before = hit_before[::-1][hit_before.find('\n')+1:][::-1]
-                        hit_context = hit_before + file.read(300).decode('utf-8', errors='replace').replace(command_options['goal'], f'\033[31;1m{command_options["goal"]}\033[0m')
+                        hit_after = file.read(300).decode('utf-8', errors='replace')
+                        hit_context = hit_before + hit_after[:hit_after.find("\n")].replace(command_options['goal'], f'\033[31;1m{command_options["goal"]}\033[0m')
 
-                    print(f'\033[0m{hit.split(":")[0]}:\033[33m{hit.split(":")[1]}\033[0m:\033[32m{hit.split(":")[2]}\033[0m:{hit_context[:hit_context.find("\n")]}')
+                    print(f'\033[0m{hit.split(":")[0]}:\033[33m{hit.split(":")[1]}\033[0m:\033[32m{hit.split(":")[2]}\033[0m:{hit_context}')
             
             if command_options['time']:
                 print(f'{database} search time: {round(float(time.time()-individual_start), 3)}s')
